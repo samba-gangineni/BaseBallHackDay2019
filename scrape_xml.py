@@ -24,6 +24,7 @@ def create_matchups(this_is_tree):
     list_of_matches = []
     for i in this_is_tree.findall(".//{http://feed.elasticstats.com/schema/baseball/v6/schedule.xsd}game"):
         temp_list = []
+        temp_list.append(i.attrib['id'])
         temp_list.append(i.attrib['scheduled'][:10])
         for child in i:
             if child.tag=="{http://feed.elasticstats.com/schema/baseball/v6/schedule.xsd}home" or child.tag=="{http://feed.elasticstats.com/schema/baseball/v6/schedule.xsd}away":
@@ -53,7 +54,7 @@ def main():
     list_of_matches = create_matchups(tree)
 
     # Creating the data frame
-    df = pd.DataFrame(list_of_matches, columns=["Date","Home","Away"])
+    df = pd.DataFrame(list_of_matches, columns=["Id","Date","Home","Away"])
     df.to_csv('schedule_2018.csv',header=True,index=False,mode='w')
 
 if __name__ == "__main__":
